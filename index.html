@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ಪೇಮೆಂಟ್ ಮಾಡಿ</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 body{margin:0;background:#f4f7fb;color:#12203a;font-family:system-ui,sans-serif;display:flex;justify-content:center;padding:24px 16px}
 .card{background:#fff;border:1px solid #dbe3ef;border-radius:16px;padding:24px;max-width:380px;width:100%;text-align:center}
@@ -22,7 +23,6 @@ button{margin-top:12px;background:none;border:1px solid #dbe3ef;padding:10px;bor
 <div class="amt">₹199</div>
 <a id="go" class="pay" href="#" target="_top">UPI ಆ್ಯಪ್ ನಲ್ಲಿ ಪೇ ಮಾಡಿ</a>
 <button id="copy">UPI ID ಕಾಪಿ ಮಾಡಿ</button>
-<p style="margin-top:14px;font-size:.85rem">ಆ್ಯಪ್ ತೆರೆಯದಿದ್ದರೆ, ಮೇಲಿನ ಮೂರು ಚುಕ್ಕೆ (⋮) ಒತ್ತಿ "Open in Chrome" ಆಯ್ಕೆ ಮಾಡಿ, ನಂತರ ಮತ್ತೆ ಒತ್ತಿ.</p>
 <div class="id">paytm.s1a25ou@pty</div>
 </div>
 <script>
@@ -30,6 +30,15 @@ var PA="paytm.s1a25ou@pty",PN="Merchant";
 var go=document.getElementById("go");
 var q="pa="+encodeURIComponent(PA)+"&pn="+encodeURIComponent(PN)+"&am=199.00&cu=INR";
 if(/Android/i.test(navigator.userAgent)){go.href="intent://pay?"+q+"#Intent;scheme=upi;end;";}else{go.href="upi://pay?"+q;}
+var tg=window.Telegram&&window.Telegram.WebApp;
+var inTG=tg&&tg.initData;
+if(inTG){
+  tg.ready();tg.expand();
+  go.addEventListener("click",function(e){
+    e.preventDefault();
+    tg.openLink(location.origin+location.pathname+"?ext=1");
+  });
+}
 document.getElementById("copy").addEventListener("click",function(e){
   try{navigator.clipboard.writeText(PA);e.target.textContent="ಕಾಪಿ ಆಯ್ತು ✓";}catch(x){e.target.textContent=PA;}
 });
